@@ -68,8 +68,6 @@ function App() {
       setCurrentMode("Session");
       setTimeLeft(transformNumbersToTime(sessionLength, 0));
     }
-    const myAudio = document.getElementById("beep") as HTMLAudioElement;
-    myAudio.play();
   }, [breakLength, sessionLength, currentMode]);
 
   const applyLowTimeEffect = () => {
@@ -112,6 +110,17 @@ function App() {
       setTimeLeft(transformNumbersToTime(breakLength, 0));
     }
   }, [sessionLength, breakLength, currentMode]);
+
+  useEffect(() => {
+    if (timeLeft === "00:00") {
+      const myAudio = document.getElementById("beep") as HTMLAudioElement;
+      if (!myAudio.paused) {
+        myAudio.pause();
+        myAudio.currentTime = 0;
+      }
+      myAudio.play();
+    }
+  }, [timeLeft]);
 
   return (
     <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-purple-800'>
